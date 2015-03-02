@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agenda Planner</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <style>
+    
+    html, body {
+        
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    }
+
+
+    #mainView{
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #FFF5EE;
+    }
+
+
+    #addActivityView{
+        display:none;
+        z-index: 5;
+        position:absolute;
+        top:25%;
+        left:25%;
+        border-style: solid;
+        border-width: 3px;
+        background-color: gray; 
+        width: 50%; 
+        height: 50%;
+    }
+
+    #blackout{
+     7   display: flex;
+        display: none;
+        position:absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+        background-color: white; 
+    }
+
+    #parkedView{
+        width: 300px; 
+        height: 500px;
+        z-index: 2;
+        position:absolute;
+        top:10%;
+        left:10%;
+        border-style: solid;
+        border-width: 3px;
+        background-color: #FFFAFA; 
+        
+    }
+
+    #parkedActivitesTable{
+        width: 100%;
+        height: 100%;
+        background-color: gray;
+        text-align: center;
+        height: 30px;
+    }
+
+    #parkedActivitesTable, td{
+        text-align: center;
+        height: 30px;
+    }
+
+    #parkedView .activity{
+      /*  display: none;*/
+    }
+
+    #dayView{
+        width: 30%; 
+        height: 75%;
+        z-index: 2;
+        position:absolute;
+        top:10%;
+        left:50%;
+        border-style: solid;
+        border-width: 3px;
+        background-color: #FFFAFA; 
+    }
+    #dayActivitesTable{
+        width: 100%;
+        height: 100%;
+        background-color: green;
+        text-align: center;
+        height: 30px;
+        border: 3px solid;
+    }
+
+    #dayActivitesTable, td{
+        text-align: center;
+        height: 30px;
+    }
+    </style>
+  
+ </head>
+ <body>
+	
+    <div id="blackout"></div>
+	<div id="mainView">
+        
+        <!--the mouse over and dragging class are defined on each item--> 
+  
+
+
+
+        
+		
+        <div id = "addActivityView">
+            <input type = "text" id="activityName" placeholder="Name"></input>
+            <input type = "number" id="activityLength" placeholder="Length"></input>
+            <select id = "activityType">
+                <option value=""  disabled selected style='display:none;'>Type</option>
+                <option value="Presentation">Presentation</option>
+                <option value="Group Work">Group Work</option>
+                <option value="Discussion">Discussion</option>    
+                <option value="Break">Break</option>   
+            </select>
+            <input type = "text" id="activityDescription" placeholder="Description"></input>
+            <button id = "addActivityDoneButton" disabled>Done</button>
+            <button id = "addActivityCancelButton">Cancel</button>
+        </div> <!-- addActivityView End -->
+	       
+        
+
+         <div id = "parkedView">
+            <button id = "addActivityButton">Add Activity</button>
+            <table id = "parkedActivitesTable">
+                <tr class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" draggable="true">Activity</td></tr>
+            </table>
+        </div>
+
+        <div id = "dayView">
+            <button id = "addDayButton">Add Day</button>
+            <table id = "dayActivitesTable">
+                <tr class = "activity"><td id = "dayTime">Time</td><td id = "dayActivity" draggable="true">Activity</td></tr>
+            </table>
+        </div>
+
+
+    
+	</div> <!-- MainView End -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+ 
+    <!-- Bootstrap JavaScript, needed if you want for instance tabs, models, popovers etc. -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    
+
+	<!-- The application JavaScript code -->
+	<script src="js/app.js"></script>
+	<script src="js/model/agendaModel.js"></script>
+	<script src="js/view/addActivityView.js"></script>
+    <script src="js/view/mainView.js"></script>
+    <script src="js/view/parkedView.js"></script>
+    <script src="js/view/dayView.js"></script>
+    <script src="js/view/addActivityController.js"></script>
+ </body>
+</html>
