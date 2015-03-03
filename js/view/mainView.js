@@ -5,32 +5,37 @@ var MainView = function (container, model) {
   	// and/or ones that responed to interaction)
 	 	
 	this.dayActivitesTable = container.find("#dayActivitesTable");
+	model.addObserver(this);
 	
-	
-window.addEventListener('load',function(){
-	document.getElementById("parkedActivity").addEventListener("dragstart", click_handler2, false);
-    document.getElementById("dayView").addEventListener("dragenter", click_handler1, false);
-    document.getElementById("parkedActivity").addEventListener("dragend", click_handler3, false);
-}, false);
+this.update = function(){
+	document.getElementById("parkedActivity").addEventListener("dragstart", drag, false);
+    document.getElementById("dayView").addEventListener("dragover", dragOver, false);
+    document.getElementById("dayView").addEventListener("drop", drop, false);
 
-click_handler1 = function(e){
-	e.preventDefault();
-	console.log('dragenter');
+    console.log('addEventListener DONE');
 }
 
-click_handler2 = function(e){
-	
+dragOver = function(e){
+	e.preventDefault();
+	console.log('dragOver');
+}
+
+drag = function(e){
 	console.log('DragSTART');
-	e.dataTransfer.setData("Text", '<p>DROPME</p>');
+	e.dataTransfer.setData("Text", e.target.id);
 }
-click_handler3 = function(e){
+
+drop = function(e){
+	//console.log('drop');
 	e.preventDefault();
-	console.log('drop');
-	dayView.innerHTML = e.dataTransfer.getData('Text');
+	 // var data=e.dataTransfer.getData("Text");
+	 // e.target.appendChild(document.getElementById(data));
+	console.log('dropDONE');	
 }
 
 
-	
+
+	this.update();
 }
  
 

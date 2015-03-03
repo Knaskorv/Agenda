@@ -44,8 +44,20 @@ var ParkedView = function (container, model) {
 			$('#parkedActivity', tr).text(name);
 			$('#parkedActivity', tr).css('background-color', color);
 			$('#parkedActivity', tr).css('width', '80%');
+			tr.attr('draggable', true);
+
+			if (tr.addEventListener) {                    // For all major browsers, except IE 8 and earlier
+   				tr.addEventListener("dragstart", function(e){console.log('Added');}, false);
+		    } else if (tr.attachEvent) {                  // For IE 8 and earlier versions
+    			x.attachEvent("dragstart", function(e){console.log('Added');}, false);
+			}
+
+
+			//tr.addEventListener("dragstart", function(e){console.log('Added');}, false);
 
 		this.parkedActivitesTable.append(tr);
+
+		console.log('Added Event');
 		}
 		}
 
