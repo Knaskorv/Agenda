@@ -12,10 +12,10 @@ var ParkedView = function (container, model) {
 		document.getElementById("blackout").style.display = "block"; 
 	});
 
-	this.addActivityButton.click(function(){
-		document.getElementById("addActivityView").style.display = "block"; 
-		document.getElementById("blackout").style.display = "block"; 
-	});
+	//this.addActivityButton.click(function(){
+	//	document.getElementById("addActivityView").style.display = "block"; 
+	//	document.getElementById("blackout").style.display = "block"; 
+	//});
 	
 	model.addObserver(this);
 
@@ -44,7 +44,13 @@ var ParkedView = function (container, model) {
 			$('#parkedActivity', tr).text(name);
 			$('#parkedActivity', tr).css('background-color', color);
 			$('#parkedActivity', tr).css('width', '80%');
-			tr.attr('draggable', true);
+			tr.attr('draggable', true); //Det går inte att göra tr draggable så
+
+			//JAG
+			console.log('After tr.attr');
+			tr.on("dragstart", null, null, function(e){console.log('Added');} );
+			
+
 
 			if (tr.addEventListener) {                    // For all major browsers, except IE 8 and earlier
    				tr.addEventListener("dragstart", function(e){console.log('Added');}, false);
