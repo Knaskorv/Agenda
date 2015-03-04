@@ -140,21 +140,23 @@
         </div> <!-- addActivityView End -->
 	       
         
-
+        <div id ="drag"><!-- JAG  -->
          <div id = "parkedView">
             <button id = "addActivityButton">Add Activity</button>
-            <table id = "parkedActivitesTable">
-                <tr class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
+            <table id = "parkedActivitesTable"> <!-- JAG  Row handler kan vi nog skippa eg -->
+                <tr class = "activity"><td class="rowhandler"><div class="drag row">R</div></td><td id = "parkedTime">Time</td><td id = "parkedActivity"  >Activity</td></tr>
             </table>
         </div>
+        
 
+        
         <div id = "dayView">
             <button id = "addDayButton">Add Day</button>
             <table id = "dayActivitesTable">
-                <tr class = "activity"><td id = "dayTime">Time</td><td id = "dayActivity" draggable="true">Activity</td></tr>
+                <tr class = "activity"><td id = "dayTime" class="mark">Time</td><td id = "dayActivity" draggable="true" class="mark">Activity</td></tr>
             </table>
         </div>
-
+       </div><!-- JAG  -->
 
     
 	</div> <!-- MainView End -->
