@@ -27,7 +27,7 @@ var ParkedView = function (container, model) {
 		for(var i = 0; i < model.parkedActivities.length; i++) {
 
 			var tr = $('tr.activity', this.parkedActivitesTable).clone().removeClass('activity');
-
+			//var tr = document.getElementById("test"); 
 			var length = model.parkedActivities[i].getLength();
 			var name = model.parkedActivities[i].getName();
 			var color; 
@@ -35,7 +35,8 @@ var ParkedView = function (container, model) {
 			color = model.parkedActivities[i].getTypeId() == "Presentation" ? 'blue' :
 					model.parkedActivities[i].getTypeId() == "Group Work" ? 'green':
 					model.parkedActivities[i].getTypeId() == "Discussion" ? 'red' :
-					model.parkedActivities[i].getTypeId() == "Break" ? 'yellow' : 'black';
+					model.parkedActivities[i].getTypeId() == "Break" ? 'yellow' 
+														   : 'black';
 
 
 			$('#parkedTime', tr).text(length);
@@ -46,20 +47,16 @@ var ParkedView = function (container, model) {
 			$('#parkedActivity', tr).css('width', '80%');
 			tr.attr('draggable', true);
 
-			if (tr.addEventListener) {                    // For all major browsers, except IE 8 and earlier
-   				tr.addEventListener("dragstart", function(e){console.log('Added');}, false);
-		    } else if (tr.attachEvent) {                  // For IE 8 and earlier versions
-    			x.attachEvent("dragstart", function(e){console.log('Added');}, false);
-			}
-
-
-			//tr.addEventListener("dragstart", function(e){console.log('Added');}, false);
-
-		this.parkedActivitesTable.append(tr);
-
-		console.log('Added Event');
+			this.parkedActivitesTable.append(tr);
+			var dndInfo = [null, i];
+			tr.on("dragstart", {dndInfo:dndInfo}, model.dragAndDrop);
+			tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
+			tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);
 		}
-		}
+		
+	}
+
+		
 
 }
  

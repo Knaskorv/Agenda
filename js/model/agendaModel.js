@@ -1,4 +1,5 @@
 // JavaScript Document
+//DragAndDrop
 
 // The possible activity types
 var ActivityType = ["Presentation","Group Work","Discussion","Break"]
@@ -145,6 +146,38 @@ function Day(startH,startM) {
 
 // this is our main module that contians days and praked activites
 function Model(){
+	//DragAndDrop
+	var dndOldDay;
+	var dndOldPosition;
+	var dndNewDay;
+	var dndNewPosistion;
+	var self = this;
+	this.dragAndDrop = function(e){
+			
+			switch(e.type) {
+    		case 'dragstart':
+    			
+       		 	dndOldDay = e.data.dndInfo[0]; 
+       		 	dndOldPosistion = e.data.dndInfo[1]; 
+				
+       	 	break;
+    		case 'drop':
+        		e.preventDefault();
+        		dndNewDay = e.data.dndInfo[0]; 
+       		 	dndNewPosistion = e.data.dndInfo[1]; 
+				console.log('Drop: '+dndOldDay+" pos: "+dndOldPosistion+" TO: "+dndNewDay+" pos: "+dndNewPosistion);
+				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosistion);	
+       	 	break;
+       	 	case 'dragover':
+        		e.preventDefault();
+				console.log('dragOver');
+       	 	break;
+    		default:
+        	console.log('defult');	
+		}
+		
+	}
+
 	this.days = [];
 	this.parkedActivities = [];
 	
