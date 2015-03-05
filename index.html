@@ -107,6 +107,16 @@
     #dayActivitesTable, td{
         text-align: center;
         height: 30px;
+
+    }
+    #toScroll{
+        overflow-x: scroll;
+        overflow-y: hidden;
+
+    }
+
+    .table{
+      /*   float: left;*/
     }
   
     </style>
@@ -150,9 +160,14 @@
 
         <div id = "dayView">
             <button id = "addDayButton">Add Day</button>
-            <table id = "dayActivitesTable">
+            <!--<div id="toScroll">Scroll-->
+            <table id = "dayActivitesTable" class=table>
+
+              <thead><td>Start time: <input id="startTimeDay" style="width: 30px;"></td><td>End time: <span id="endTimeDay"></span></td><td>Total time: <span id="totalTimeDay"></span></td></thead>
+
                 <tr class = "activity"><td id = "dayTime">Time</td><td id = "dayActivity" draggable="true">Activity</td></tr>
             </table>
+        <!--</div>Scroll-->
         </div>
 
 
