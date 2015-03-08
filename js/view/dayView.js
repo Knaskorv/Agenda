@@ -11,12 +11,19 @@ var DayView = function (container, model) {
 	//To update the time set for that day
 	this.showTime = function(){
 		console.log('I  showTime');
-	this.startTimeDay= container.find('#startTimeDay');
-	this.endTimeDay= container.find('#endTimeDay');
-	this.totalTimeDay= container.find('#totalTimeDay');
+	
 		for(var i=0; i<model.days.length; i++){
+			console.log('kolla dayActivitesTable id '+ this.dayActivitesTable.id);
+			this.startTimeDay= container.find('#startTimeDay'+i);
+			console.log('kolla startTimeDay id '+ container.find('#startTimeDay'+i).id);
+	this.endTimeDay= container.find('#endTimeDay'+i);
+	this.totalTimeDay= container.find('#totalTimeDay'+i);
+		console.log('hämtad totalTimeDay  '+'#totalTimeDay'+i);
+
 			this.startTimeDay.attr("value",(model.days[i].getStart()));
+			console.log('Startid '+model.days[i].getStart());
 			this.endTimeDay.html(model.days[i].getEnd());
+			console.log('Endtid '+model.days[i].getEnd());
 			this.totalTimeDay.html(model.days[i].getTotalLength());
 		}
 	
@@ -25,11 +32,12 @@ var DayView = function (container, model) {
 
 	 // skapa en dag som finns från start av program, nånstannsför anv attbörja
 	this.addANewDay = function (){
-		model.addDay(8,4);
+		model.addDay(8,10);
 		var dayTable = this.dayActivitesTable.clone(); 
+		console.log('Table ID  '+ dayTable.id);
 		dayTable.on("dragover", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
 		dayTable.on("drop", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
-		this.showTime();
+		this.showTime(); 
 	};
 	
 	this.addANewDay();
@@ -43,12 +51,42 @@ var DayView = function (container, model) {
 
 	this.addDayButton.click(function(){
 		model.addDay(9, 10); 
-		console.log('I  addDayButton');
-		self.showTime();
-		var dayTable = self.dayActivitesTable.clone(); 
+		console.log('I  addDayButton'+(model.days.length-1)); 
+		var dayTable = self.dayActivitesTable.clone(true, true); //jQuery.extend(true,{}, dayActivitesTable);
+		//dayTable.style.float ='left'; // klagar och ger att det inte går att sätta detta på undefined
+		//Dessa går att göra.
+		dayTable.id = 'dayActivitesTable'+(model.days.length-1);
+		console.log('id dayTable  '+ dayTable.id); // utan den ovan och med clone ger denna undefined på id. med jQuery.extend(true,{}, dayActivitesTable); hittas id men att ta find lr on på den ger undefinedis not a function,tas self.dayActivities blir id undefined men allt går igenom
+		//Denna går ej för dayTable är undefined
+		//dayTable.innerHTML = dayTable.innerHTML.replace(/0"/g,(model.days.length-1)+'"');
+
+
+		// gå in i self o klona input o det. Appenda till dayTable. För
+		// Den har nu en pekare till originalets objekt därav inget eget
+
+
+
+		// set new id
+		//Denna sätter nytt id på starttime, men det verkar inte 
+		//nå in i dayTablekopian för det går ej att hämta det 
+		//elementets id. I show time får alla den 1a dagens tid dvs alla 
+		// tabeller har samma id på de inre elementen, de sätts ej om här
+		//dayTable.find('#startTimeDay0').id = 'startTimeDay'+(model.days.length-1);
+		var startTime = dayTable.find('#startTimeDay0');
+		console.log('prints startTimeDay before id switch '+ dayTable.find('#startTimeDay0').id);
+		startTime.id = 'startTimeDay'+(model.days.length-1);
+		console.log('id startTimeDay  '+ startTime.id);
+		console.log('prints startTimeDay  '+ dayTable.find('#startTimeDay1').id); //startTime får rätt id, men har undefined class. Dvs den erkar inte va det elementet jag tycker det ska för den hittar det id jag satt men inte klassen som dess original ska ha
+
+		var endTime = dayTable.find('#endTimeDay0');
+		endTime.id = 'endTimeDay'+(model.days.length-1);
+		console.log('id endTimeDay  '+ endTime.id);
+		console.log('prints endTimeDay  '+ dayTable.find('#endTimeDay1').id); 
+		
 		dayTable.on("dragover", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
 		dayTable.on("drop", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
 		container.append(dayTable);
+		self.showTime();
 		console.log('Langd på days lista: '+model.days.length);
 	});
 
