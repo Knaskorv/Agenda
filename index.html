@@ -57,8 +57,8 @@
         height: 500px;
         z-index: 2;
         position:absolute;
-        top:10%;
-        left:10%;
+        top:20px;
+        left:20px;
         border-style: solid;
         border-width: 3px;
         background-color: #FFFAFA; 
@@ -90,14 +90,31 @@
         height: 75%;
         z-index: 2;
         position:absolute;
-        top:10%;
-        left:50%;
+        top:20px;
+        left:350px;
         border-style: solid;
         border-width: 3px;
         background-color: #FFFAFA; 
     }
     #dayActivitesTable{
-        margin-top: 50px; 
+        
+        padding: 0px 0px 0px 0px; 
+        text-align: center;
+        height: 30px;
+        border: 3px solid;
+        display: none;
+        
+    }
+
+    #dayActivitesTable, td{
+        text-align: center;
+        height: 30px;
+
+
+    }
+
+    #dayActivitesTableHead{
+        padding: 0px 0px 0px 0px;  
         float:left;
         display: inline-block;
         width: 300px;
@@ -107,11 +124,16 @@
         height: 30px;
         border: 3px solid;
         display: none;
+        margin: 50px 20px 20px 20px ;
     }
 
-    #dayActivitesTable, td{
-        text-align: center;
-        height: 30px;
+    thead, tr{
+        width: 50%; 
+
+    }
+
+    #dayActivitesTable, thead{
+        height: 80px; 
 
     }
     #toScroll{
@@ -124,6 +146,10 @@
         position: absolute;
         height: 30px; 
         width: 100px; 
+    }
+
+    .activity{
+        display: none; 
     }
 
     .table{
@@ -172,11 +198,27 @@
         <div id = "dayView">
             <button id = "addDayButton">Add Day</button>
             <!--<div id="toScroll">Scroll-->
-            <table id = "dayActivitesTable" class=table>
+            <table id = "dayActivitesTableHead" class=table>
 
-              <thead><td>Start time: <input type ="text" id="startTimeDay" style="width: 30px;"></td><td>End time: <span id="endTimeDay"></span></td><td>Total time: <span id="totalTimeDay"></span></td></thead>
+              <thead>
+                    <tr>
+                        <td>Start time: <input type ="text" id="startTimeDay" style="width: 40px;"></td>
+                        <td>End time: <span id="endTimeDay"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Total time: <span id="totalTimeDay"></span></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr class = "activity"><td id = "dayTime">Time</td><td id = "dayActivity" draggable="true">Activity</td></tr>
+                    <table id = "dayActivitesTable">
+                        <tr class = "activity">
+                            <td id = "dayTime">Time</td>
+                            <td id = "dayActivity" draggable="true">Activity</td>
+                        </tr>
+                </table>
+                </tboby>
             </table>
         <!--</div>Scroll-->
         </div>

@@ -4,7 +4,7 @@ var DayView = function (container, model) {
 	// Get all the relevant elements of the view (ones that show data
   	// and/or ones that responed to interaction)
 	 	
-	
+	this.dayActivitesTableHead = container.find("#dayActivitesTableHead");
 	this.dayActivitesTable = container.find("#dayActivitesTable");
 	this.addDayButton = container.find("#addDayButton");
 
@@ -29,13 +29,12 @@ var DayView = function (container, model) {
 
 
 	this.update = function(){
-		console.log('UPDATE')
 		$('.table:not(:first)', container).remove();
-
+		$('.activity:not(:first)', self.dayActivitesTable).remove();
 	
 
 		for(var i = 0; i < model.days.length; i++){
-			var day = self.dayActivitesTable.clone();
+			var day = self.dayActivitesTableHead.clone();
 			
 			day.id = 'id' +i; 
 			$('#startTimeDay', day).data('dayNr', i);
@@ -44,32 +43,27 @@ var DayView = function (container, model) {
 		
 			$('#startTimeDay', day).change(function() {
 
-					console.log($(this).data('dayNr'));
-  					tempModel.days[$(this).data('dayNr')].setStart($(this).val(), 10);
+					
+					var res = $(this).val().split(":");
+  					tempModel.days[$(this).data('dayNr')].setStart(Number(res[0]), Number(res[1]));
   					tempModel.notifyObservers(); 
-
 
 			});
 
 			$('#startTimeDay', day).val(model.days[i].getStart());
-			$('#endTimeDay', day).text(model.days[i].getStart());
+			$('#endTimeDay', day).text(model.days[i].getEnd());
+			$('#totalTimeDay', day).text(model.days[i].getTotalLength());
 
-			day.on("dragover", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
-			day.on("drop", {dndInfo:[model.days.length-1, 0]}, model.dragAndDrop);
+			day.on("dragover", {dndInfo:[i, 0]}, model.dragAndDrop);
+			day.on("drop", {dndInfo:[i, 0]}, model.dragAndDrop);
 			
 			day.show();
 			container.append(day); 
 			
 			//
-			console.log(day.id)
-		
-			$('tr:not(:first)', container.getElementById(day.id)).remove();
-		
+			var time = model.days[i]._start; 
 			for(var j = 0; j < model.days[i]._activities.length; j++){
-				var tr = $('tr.activity', day).clone().removeClass('activity');
-				console.log(tr)
-				//var tr = document.getElementById("test"); 
-				console.log(i+" "+j);
+				var tr = $('tr.activity', self.dayActivitesTable).clone();
 				var length = model.days[i]._activities[j].getLength();
 				var name = model.days[i]._activities[j].getName();
 				var color; 
@@ -79,18 +73,22 @@ var DayView = function (container, model) {
 						model.days[i]._activities[j].getTypeId() == "Discussion" ? 'red' :
 						model.days[i]._activities[j].getTypeId() == "Break" ? 'yellow' : 'black';
 
-
-				$('#dayTime', tr).text(length);
-				$('#dayTime', tr).text(length).css('background-color', 'white');
-				$('#dayTime', tr).text(length).css('width', '20%');
+						
+				 
+			
+				
+				$('#dayTime', tr).text(Math.floor(Number(time)/60) + ":" + time % 60 + " - " + Math.floor((Number(time)+Number(length))/60) + ":" + (Number(time)+Number(length)) % 60);
+				time = Number(time) + Number(length);
+				$('#dayTime', tr).css('background-color', 'white');
+				$('#dayTime', tr).css('width', '50%');
 				$('#dayActivity', tr).text(name);
 				$('#dayActivity', tr).css('background-color', color);
-				$('#dayActivity', tr).css('width', '80%');
+				$('#dayActivity', tr).css('width', '50%');
 				tr.attr('draggable', true);
 			
 				tr.show(); 
-				this.dayActivitesTable.append(tr);
-				var dndInfo = [0, j];
+				day.append(tr);
+				var dndInfo = [i, j];
 				tr.on("dragstart", {dndInfo:dndInfo}, model.dragAndDrop);
 				tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
 				tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);

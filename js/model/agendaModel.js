@@ -73,9 +73,9 @@ function Day(startH,startM) {
 
 	// sets the start time to new value
 	this.setStart = function(startH,startM) {
+
 		this._start = startH * 60 + startM;
 		model.notifyObservers();
-		console.log('update SETSTART')
 	}
 
 	// returns the total length of the acitivities in 
@@ -83,7 +83,7 @@ function Day(startH,startM) {
 	this.getTotalLength = function () {
 		var totalLength = 0;
 		$.each(this._activities,function(index,activity){
-			totalLength += activity.getLength();
+			totalLength += Number(activity.getLength());
 		});
 		return totalLength;
 	};
@@ -151,7 +151,7 @@ function Model(){
 	var dndOldDay;
 	var dndOldPosition;
 	var dndNewDay;
-	var dndNewPosistion;
+	var dndNewPosition;
 	var self = this;
 	this.dragAndDrop = function(e){
 			
@@ -159,15 +159,15 @@ function Model(){
     		case 'dragstart':
     			
        		 	dndOldDay = e.data.dndInfo[0]; 
-       		 	dndOldPosistion = e.data.dndInfo[1]; 
+       		 	dndOldPosition = e.data.dndInfo[1]; 
 				
        	 	break;
     		case 'drop':
         		e.preventDefault();
         		dndNewDay = e.data.dndInfo[0]; 
-       		 	dndNewPosistion = e.data.dndInfo[1]; 
-				console.log('Drop: '+dndOldDay+" pos: "+dndOldPosistion+" TO: "+dndNewDay+" pos: "+dndNewPosistion);
-				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosistion);	
+       		 	dndNewPosition = e.data.dndInfo[1]; 
+				console.log('Drop: '+dndOldDay+" pos: "+dndOldPosition+" TO: "+dndNewDay+" pos: "+dndNewPosition);
+				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);	
        	 	break;
        	 	case 'dragover':
         		e.preventDefault();
