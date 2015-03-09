@@ -164,11 +164,11 @@
 
     }
 
-    #addDayButton{
+  /*  #addDayButton{
         position: absolute;
         height: 30px; 
         width: 100px; 
-    }
+    }*/
 
     .activity{
         display: none; 
@@ -187,6 +187,18 @@
     font-family: "Verdana";
     text-align: center;
     }
+
+    .btn{
+        font-size: 16px;
+    font-family: Trebuchet MS;
+    font-weight: normal;
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid #6A8BAD;
+    padding: 9px 18px;
+    text-shadow: 1px 1px 0px #528ecc;
+    box-shadow: inset 1px 1px 0px 0px #bbdaf7;
+    background-color: #3d94f6;
+    }
   
     </style>
   
@@ -200,10 +212,6 @@
        <div id="header">        
                 <h1 class="fonthead">Day planner </h1>         
             </div>
-
-
-
-        
 		
         <div id = "addActivityView">
             <input type = "text" id="activityName" placeholder="Name"></input>
@@ -223,7 +231,7 @@
         
 
          <div id = "parkedView">
-            <button id = "addActivityButton">Add Activity</button>
+            <button id = "addActivityButton" class="btn">Add Activity</button>
             <div id="tableDivpark">
             <table id = "parkedActivitesTable">
                 <tr id = "test" class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
@@ -232,10 +240,10 @@
         </div>
 
         <div id = "dayView">
-            <button id = "addDayButton">Add Day</button>
+            <button id = "addDayButton" class = "btn">Add Day</button>
             <!--<div id="toScroll">Scroll-->
             <div id="tableDivday">
-            <table id = "dayActivitesTableHead" class=table>
+            <table id = "dayActivitesTableHead" class="table">
 
               <thead>
                     <tr>
