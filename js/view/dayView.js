@@ -58,7 +58,7 @@ var DayView = function (container, model) {
 			day.on("drop", {dndInfo:[i, 0]}, model.dragAndDrop);
 			
 			day.show();
-			container.append(day); 
+			container.find("#tableDivday").append(day); 
 			
 			//
 			var time = model.days[i]._start; 
