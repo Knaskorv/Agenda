@@ -24,7 +24,8 @@
         z-index: 0;
         width: 100%;
         height: 100%;
-        background-color: #FFF5EE;
+        background-color: white;
+        padding-top: 10px;
     }
 
 
@@ -52,16 +53,27 @@
         background-color: white; 
     }
 
+    #tableDivpark{
+        position: absolute;
+    bottom: 0;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #E6E6E6; 
+        width: 300px;
+        height: 450px;
+        border-color: black;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+
     #parkedView{
         width: 300px; 
         height: 500px;
         z-index: 2;
         position:absolute;
-        top:20px;
+        top:100px;
         left:20px;
-        border-style: solid;
-        border-width: 3px;
-        background-color: #FFFAFA; 
+        
         
     }
 
@@ -72,6 +84,8 @@
         background-color: gray;
         text-align: center;
         height: 30px;
+       /* margin: 20px 0px 0px 0px ;*/
+
     }
 
     #parkedActivitesTable, td{
@@ -85,16 +99,22 @@
 
     }
 
+#tableDivday{
+    height: 90%;
+    width: 1500px;
+    position: absolute;
+    bottom: 0;
+}
     #dayView{
 
         height: 75%;
         z-index: 2;
         position:absolute;
-        top:20px;
+        top:100px;
         left:350px;
-        border-style: solid;
+       /* border-style: solid;
         border-width: 3px;
-        background-color: #FFFAFA; 
+        background-color: #FFFAFA;*/
     }
     #dayActivitesTable{
         
@@ -102,7 +122,10 @@
         text-align: center;
         height: 30px;
         border: 3px solid;
+        border-color: black;
+    border-radius: 25px;
         display: none;
+
         
     }
 
@@ -114,17 +137,21 @@
     }
 
     #dayActivitesTableHead{
-        padding: 0px 0px 0px 0px;  
+        padding: 0px 0px 0px 0px;
+        top: 0;  
         float:left;
         display: inline-block;
         width: 300px;
-        height: 500px;
-        background-color: green;
+        height: 500px;      
         text-align: center;
-        height: 30px;
-        border: 3px solid;
+        height: 30px;   
         display: none;
-        margin: 50px 20px 20px 20px ;
+        margin: 20px 20px 20px 20px ;
+        overflow: hidden;
+     background-color: #E6E6E6; 
+     border:1px solid;
+        border-color: black;
+        border-radius: 25px; 
     }
 
     thead, tr{
@@ -132,13 +159,9 @@
 
     }
 
-    #dayActivitesTable, thead{
-        height: 80px; 
-
-    }
+    
     #toScroll{
-        overflow-x: scroll;
-        overflow-y: hidden;
+        overflow: scroll;
 
     }
 
@@ -155,6 +178,16 @@
     .table{
       /*   float: left;*/
     }
+
+    .fonthead {
+    font-family: "Verdana";
+    text-align: center;
+    background-color: #999999;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    /* color: #B2B2B2;*/
+}
   
     </style>
   
@@ -165,7 +198,11 @@
 	<div id="mainView">
         
         <!--the mouse over and dragging class are defined on each item--> 
-       
+       <div id="header">
+                <div >
+                <h1 class="fonthead">Day planner </h1>
+                </div>
+            </div>
 
 
 
@@ -190,14 +227,17 @@
 
          <div id = "parkedView">
             <button id = "addActivityButton">Add Activity</button>
+            <div id="tableDivpark">
             <table id = "parkedActivitesTable">
                 <tr id = "test" class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
             </table>
+            </div>
         </div>
 
         <div id = "dayView">
             <button id = "addDayButton">Add Day</button>
             <!--<div id="toScroll">Scroll-->
+            <div id="tableDivday">
             <table id = "dayActivitesTableHead" class=table>
 
               <thead>
@@ -220,6 +260,7 @@
                 </table>
                 </tboby>
             </table>
+            </div>
         <!--</div>Scroll-->
         </div>
 
