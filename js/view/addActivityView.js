@@ -17,14 +17,25 @@ var AddActivityView = function (container, model) {
 	this.addActivityCancelButton.click(function(){
 		document.getElementById("addActivityView").style.display = "none"; 
 		document.getElementById("blackout").style.display = "none"; 
+		
 	});
 
 	this.update = function(){
 	if(this.activityName.val() && this.activityDescription.val() && this.activityLength.val() > 0 && this.activityType.val()){
            this.addActivityDoneButton.prop('disabled', false);
     }
+
+
+
+
 	}
-	
+
+	this.resetFields = function(){
+		this.activityDescription.val('');
+		this.activityName.val('');
+		this.activityLength.val('');
+		this.activityType.val('');
+	}	
 }
  
 

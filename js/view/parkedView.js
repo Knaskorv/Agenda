@@ -6,6 +6,7 @@ var ParkedView = function (container, model) {
 	 	
 	this.addActivityButton = container.find("#addActivityButton");
 	this.parkedActivitesTable = container.find("#parkedActivitesTable");
+	this.tableDivpark = container.find("#tableDivpark");
 
 	this.addActivityButton.click(function(){
 		document.getElementById("addActivityView").style.display = "block"; 
@@ -18,24 +19,32 @@ var ParkedView = function (container, model) {
 	});
 	
 	model.addObserver(this);
+	var self = this; 
+
+	this.tableDivpark.on("dragover", {dndInfo:[null, 0]}, model.dragAndDrop);
+	this.tableDivpark.on("drop", {dndInfo:[null, 0]}, model.dragAndDrop);
 
 	this.update = function(){
 
 		$('tr:not(:first)', this.parkedActivitesTable).remove();
 		
+		
 
 		for(var i = 0; i < model.parkedActivities.length; i++) {
+			if(model.parkedActivities[i] != undefined){
 
+			
 			var tr = $('tr.activity', this.parkedActivitesTable).clone().removeClass('activity');
 			//var tr = document.getElementById("test"); 
+			console.log(model.parkedActivities);
 			var length = model.parkedActivities[i].getLength();
 			var name = model.parkedActivities[i].getName();
 			var color; 
 
-			color = model.parkedActivities[i].getTypeId() == "Presentation" ? 'blue' :
-					model.parkedActivities[i].getTypeId() == "Group Work" ? 'green':
-					model.parkedActivities[i].getTypeId() == "Discussion" ? 'red' :
-					model.parkedActivities[i].getTypeId() == "Break" ? 'yellow' 
+			color = model.parkedActivities[i].getTypeId() == "Presentation" ? '#6C6CFF' :
+					model.parkedActivities[i].getTypeId() == "Group Work" ? '#85FF85':
+					model.parkedActivities[i].getTypeId() == "Discussion" ? '#FF5F5F' :
+					model.parkedActivities[i].getTypeId() == "Break" ? '#FFFF66' 
 														   : 'black';
 
 
@@ -52,6 +61,7 @@ var ParkedView = function (container, model) {
 			tr.on("dragstart", {dndInfo:dndInfo}, model.dragAndDrop);
 			tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
 			tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);
+			}
 		}
 		
 	}

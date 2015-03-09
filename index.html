@@ -24,7 +24,7 @@
         z-index: 0;
         width: 100%;
         height: 100%;
-        background-color: #FFF5EE;
+        background-color: white;
     }
 
 
@@ -33,13 +33,28 @@
         z-index: 5;
         position:absolute;
         top:25%;
-        left:25%;
+        left:45%;
         border-style: solid;
-        border-width: 3px;
-        background-color: gray; 
-        width: 50%; 
-        height: 50%;
+        border-width: 1px;
+        background-color: #E6E6E6; 
+        width:250px; 
+        height: 300px;
+        border-radius: 25px;
+        padding: 20px 20px 20px 20px;  
+
+        
     }
+
+     #addActivityView > div{
+
+        margin: 10px;
+    }
+
+    #activityDescription{
+        text-align: left; 
+
+        height: 60px; 
+    }  
 
     #blackout{
         display: flex;
@@ -48,8 +63,21 @@
         z-index: 3;
         width: 100%;
         height: 100%;
-        opacity: 0.9;
+        opacity: 0.8;
         background-color: white; 
+    }
+
+    #tableDivpark{
+        position: absolute;
+        bottom: 0;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #E6E6E6; 
+        width: 300px;
+        height: 437px;
+        border-color: black;
+        border-radius: 25px;
+        overflow: hidden;
     }
 
     #parkedView{
@@ -57,11 +85,9 @@
         height: 500px;
         z-index: 2;
         position:absolute;
-        top:20px;
+        top:100px;
         left:20px;
-        border-style: solid;
-        border-width: 3px;
-        background-color: #FFFAFA; 
+        
         
     }
 
@@ -72,6 +98,8 @@
         background-color: gray;
         text-align: center;
         height: 30px;
+       /* margin: 20px 0px 0px 0px ;*/
+
     }
 
     #parkedActivitesTable, td{
@@ -85,16 +113,22 @@
 
     }
 
+#tableDivday{
+    height: 690px;
+    width: 1500px;
+    position: relative;
+    bottom: 0;
+}
     #dayView{
 
         height: 75%;
         z-index: 2;
         position:absolute;
-        top:20px;
+        top:100px;
         left:350px;
-        border-style: solid;
+       /* border-style: solid;
         border-width: 3px;
-        background-color: #FFFAFA; 
+        background-color: #FFFAFA;*/
     }
     #dayActivitesTable{
         
@@ -102,7 +136,10 @@
         text-align: center;
         height: 30px;
         border: 3px solid;
+        border-color: black;
+    border-radius: 25px;
         display: none;
+
         
     }
 
@@ -114,17 +151,22 @@
     }
 
     #dayActivitesTableHead{
-        padding: 0px 0px 0px 0px;  
+        padding: 0px 0px 0px 0px;
+        top: 0;  
         float:left;
         display: inline-block;
         width: 300px;
-        height: 500px;
-        background-color: green;
+        height: 500px;      
         text-align: center;
-        height: 30px;
-        border: 3px solid;
+        height: 30px;   
         display: none;
-        margin: 50px 20px 20px 20px ;
+
+        margin: 20px 20px 20px 20px ;
+        overflow: hidden;
+        background-color: #E6E6E6; 
+        border:1px solid;
+        border-color: black;
+        border-radius: 25px; 
     }
 
     thead, tr{
@@ -132,20 +174,13 @@
 
     }
 
-    #dayActivitesTable, thead{
-        height: 80px; 
-
-    }
     #toScroll{
-        overflow-x: scroll;
-        overflow-y: hidden;
+        overflow: scroll;
 
     }
 
     #addDayButton{
-        position: absolute;
-        height: 30px; 
-        width: 100px; 
+        margin: 0px 0px 0px 20px; 
     }
 
     .activity{
@@ -155,50 +190,76 @@
     .table{
       /*   float: left;*/
     }
+
+
+
+#header{
+    background-color: #333333;
+    padding: 3px;
+    }
+
+    .fonthead {
+    font-family: "Verdana";
+    text-align: center;
+    color: #CCCCCC;
+    
+    }
+
+    .btn{
+        font-size: 16px;
+        font-family: Trebuchet MS;
+        border-radius: 8px 8px 8px 8px;
+        border: 1px solid #6A8BAD;
+        padding: 9px 18px;
+        text-shadow: 1px 1px 0px #528ecc;
+        color: #E6E6E6;
+        background-color: #537CCF;
+    }
   
     </style>
   
  </head>
  <body>
-	
+    
     <div id="blackout"></div>
-	<div id="mainView">
+    <div id="mainView">
         
         <!--the mouse over and dragging class are defined on each item--> 
-       
-
-
-
+       <div id="header">        
+                <h1 class="fonthead">Agenda</h1>         
+            </div>
         
-		
         <div id = "addActivityView">
-            <input type = "text" id="activityName" placeholder="Name"></input>
-            <input type = "number" id="activityLength" placeholder="Length"></input>
-            <select id = "activityType">
+            <div><input type = "text" id="activityName" placeholder="Name"></input></div>
+            <div><input type = "number" id="activityLength" placeholder="Length"></input></div>
+            <div><select id = "activityType">
                 <option value=""  disabled selected style='display:none;'>Type</option>
                 <option value="Presentation">Presentation</option>
                 <option value="Group Work">Group Work</option>
                 <option value="Discussion">Discussion</option>    
                 <option value="Break">Break</option>   
-            </select>
-            <input type = "text" id="activityDescription" placeholder="Description"></input>
-            <button id = "addActivityDoneButton" disabled>Done</button>
-            <button id = "addActivityCancelButton">Cancel</button>
+            </select></div>
+           <div> <input type = "text" id="activityDescription" placeholder="Description"></input></div>
+            <div><button id = "addActivityDoneButton" disabled>Done</button></div>
+            <div><button id = "addActivityCancelButton">Cancel</button></div>
         </div> <!-- addActivityView End -->
-	       
+           
         
 
          <div id = "parkedView">
-            <button id = "addActivityButton">Add Activity</button>
+            <button id = "addActivityButton" class="btn">Add Activity</button>
+            <div id="tableDivpark">
             <table id = "parkedActivitesTable">
                 <tr id = "test" class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
             </table>
+            </div>
         </div>
 
         <div id = "dayView">
-            <button id = "addDayButton">Add Day</button>
+            <button id = "addDayButton" class = "btn">Add Day</button>
             <!--<div id="toScroll">Scroll-->
-            <table id = "dayActivitesTableHead" class=table>
+            <div id="tableDivday">
+            <table id = "dayActivitesTableHead" class="table">
 
               <thead>
                     <tr>
@@ -207,7 +268,7 @@
                     </tr>
                     <tr>
                         <td>Total time: <span id="totalTimeDay"></span></td>
-                        <td></td>
+                        <td><span id = "activitiesRatio"></span></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,12 +281,13 @@
                 </table>
                 </tboby>
             </table>
+            </div>
         <!--</div>Scroll-->
         </div>
 
 
     
-	</div> <!-- MainView End -->
+    </div> <!-- MainView End -->
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery.js"></script>
@@ -234,10 +296,10 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     
 
-	<!-- The application JavaScript code -->
-	<script src="js/app.js"></script>
-	<script src="js/model/agendaModel.js"></script>
-	<script src="js/view/addActivityView.js"></script>
+    <!-- The application JavaScript code -->
+    <script src="js/app.js"></script>
+    <script src="js/model/agendaModel.js"></script>
+    <script src="js/view/addActivityView.js"></script>
     <script src="js/view/mainView.js"></script>
     <script src="js/view/parkedView.js"></script>
     <script src="js/view/dayView.js"></script>

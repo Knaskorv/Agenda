@@ -16,6 +16,7 @@ var AddActivityController = function (view, model) {
 
 		view.activityName.text(' '); 
 		view.update();
+		view.resetFields(); 
 		model.notifyObservers();
 
 	});
