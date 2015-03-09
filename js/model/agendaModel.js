@@ -75,6 +75,7 @@ function Day(startH,startM) {
 	this.setStart = function(startH,startM) {
 		this._start = startH * 60 + startM;
 		model.notifyObservers();
+		console.log('update SETSTART')
 	}
 
 	// returns the total length of the acitivities in 
@@ -279,3 +280,4 @@ function createTestData(){
 		console.log("Day '" + ActivityType[index] + "' Length: " +  model.days[0].getLengthByType(index) + " min");
 	});
 }
+

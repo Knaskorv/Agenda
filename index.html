@@ -42,7 +42,7 @@
     }
 
     #blackout{
-     7   display: flex;
+        display: flex;
         display: none;
         position:absolute;
         z-index: 3;
@@ -66,6 +66,7 @@
     }
 
     #parkedActivitesTable{
+
         width: 100%;
         height: 100%;
         background-color: gray;
@@ -85,7 +86,7 @@
     }
 
     #dayView{
-        width: 30%; 
+
         height: 75%;
         z-index: 2;
         position:absolute;
@@ -96,17 +97,37 @@
         background-color: #FFFAFA; 
     }
     #dayActivitesTable{
-        width: 100%;
-        height: 100%;
+        margin-top: 50px; 
+        float:left;
+        display: inline-block;
+        width: 300px;
+        height: 500px;
         background-color: green;
         text-align: center;
         height: 30px;
         border: 3px solid;
+        display: none;
     }
 
     #dayActivitesTable, td{
         text-align: center;
         height: 30px;
+
+    }
+    #toScroll{
+        overflow-x: scroll;
+        overflow-y: hidden;
+
+    }
+
+    #addDayButton{
+        position: absolute;
+        height: 30px; 
+        width: 100px; 
+    }
+
+    .table{
+      /*   float: left;*/
     }
   
     </style>
@@ -150,9 +171,14 @@
 
         <div id = "dayView">
             <button id = "addDayButton">Add Day</button>
-            <table id = "dayActivitesTable">
+            <!--<div id="toScroll">Scroll-->
+            <table id = "dayActivitesTable" class=table>
+
+              <thead><td>Start time: <input type ="text" id="startTimeDay" style="width: 30px;"></td><td>End time: <span id="endTimeDay"></span></td><td>Total time: <span id="totalTimeDay"></span></td></thead>
+
                 <tr class = "activity"><td id = "dayTime">Time</td><td id = "dayActivity" draggable="true">Activity</td></tr>
             </table>
+        <!--</div>Scroll-->
         </div>
 
 
