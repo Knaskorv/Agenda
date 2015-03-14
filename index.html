@@ -215,6 +215,13 @@
         color: #E6E6E6;
         background-color: #537CCF;
     }
+
+    #scrollPark{
+        width:315px; 
+        height:447px; 
+        padding-bottom:15px; 
+        overflow-y:scroll;
+    }
   
     </style>
   
@@ -248,10 +255,12 @@
 
          <div id = "parkedView">
             <button id = "addActivityButton" class="btn">Add Activity</button>
-            <div id="tableDivpark">
-            <table id = "parkedActivitesTable">
-                <tr id = "test" class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
-            </table>
+            <div id="tableDivpark" >
+                <div id="scrollPark">
+                    <table id = "parkedActivitesTable">
+                    <tr id = "test" class = "activity"><td id = "parkedTime">Time</td><td id = "parkedActivity" >Activity</td></tr>
+                    </table>
+                </div>
             </div>
         </div>
 
