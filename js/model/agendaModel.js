@@ -20,7 +20,7 @@ function Activity(name,length,typeid,description){
 	}
 
 	// get the name of the activity
-	this.getName = function(name) {
+	this.getName = function() {
 		return _name;
 	}
 	
@@ -154,63 +154,6 @@ function Day(startH,startM) {
 
 // this is our main module that contians days and praked activites
 function Model(){
-	//DragAndDrop
-	var dndOldDay;
-	var dndOldPosition;
-	var dndNewDay;
-	var dndNewPosition;
-	var self = this;
-	var dropActivity; 
-	
-	this.dragAndDrop = function(e){
-			
-			switch(e.type) {
-    		case 'dragstart':
-    			
-       		 	dndOldDay = e.data.dndInfo[0]; 
-       		 	dndOldPosition = e.data.dndInfo[1]; 
-       		 	//console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
-				
-       	 	break;
-    		case 'drop':
-        		e.preventDefault();
-        		dndNewDay = e.data.dndInfo[0]; 
-       		 	dndNewPosition = e.data.dndInfo[1]; 
-       		 	console.log('Drop From - Day: '+dndOldDay+' Pos: '+dndOldPosition)
-       		 	console.log('Drop To   - Day: '+dndNewDay+' Pos: '+dndNewPosition)
-				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);	
-       	 	break;
-       	 	case 'dragover':
-       	 		console.log('dragover')
-        		e.preventDefault();
-        		//dndNewDay = e.data.dndInfo[0]; 
-       		 	//dndNewPosition = e.data.dndInfo[1];
-        		//dropActivity = Activity('',length,10,'')
-				
-       	 	break;
-       	 	case 'dragenter':
-       	 		console.log('dragover')
-       	 		//dndNewDay = e.data.dndInfo[0]; 
-       		 	//dndNewPosition = e.data.dndInfo[1]; 
-       		 	//dropActivity = new Activity("",50,0,""); 
-
-       		 	//self.addActivity(dropActivity,dndNewDay, dndNewPosition);
-       		 	//console.log(dropActivity+' '+dndNewDay+' '+ dndNewPosition)
-  
-       		 	//self.notifyObservers(); 
-
-       	 	break; 
-       	 	case 'dragleave':
-       	 		
-       	 		//this.days[dndNewDay]._removeActivity(dndNewPosition);
-       	 		//self.notifyObservers(); 
-
-       	 	break; 
-    		default:
-        		
-		}
-		
-	}
 
 	this.days = [];
 	this.parkedActivities = [];
@@ -233,6 +176,10 @@ function Model(){
 		this.days.splice(dayNr, 1); 
 		this.notifyObservers();
 	};
+
+	this.removeDayActivity = function(dayNr, position){
+		this.days[dayNr]._removeActivity(position); 
+	}
 
 	// add an activity to model
 	this.addActivity = function (activity,day,position) {

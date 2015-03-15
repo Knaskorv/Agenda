@@ -1,5 +1,5 @@
 //ExampleView Object constructor
-var MainView = function (container, model) {
+var MainView = function (container, model, view) {
 	
 	// Get all the relevant elements of the view (ones that show data
   	// and/or ones that responed to interaction)
@@ -39,18 +39,92 @@ var MainView = function (container, model) {
 		document.getElementById("blackout").style.display = "block"; 
 	});
 
-	//_____DRAG AND DROP FOR THE PARKED TABLE_____//
-	this.tableDivpark.on("dragover", {dndInfo:[null, 0]}, model.dragAndDrop);
-	this.tableDivpark.on("drop", {dndInfo:[null, 0]}, model.dragAndDrop);
+
 	
+	//DRAG AND DROP
+	var dndOldDay;
+	var dndOldPosition;
+	var dndNewDay;
+	var dndNewPosition;
+	var dropActivity; 
+	var dndFlag = false; 
+	var dragTr; 
+	var droped = false; 
+	this.dragAndDrop = function(e){
+			
+			switch(e.type) {
+    		case 'dragstart':
+    			droped = false; //To solve the "doubble drop" problem 
+       		 	dndOldDay = e.data.dndInfo[0]; 
+       		 	dndOldPosition = e.data.dndInfo[1]; 
+       		 	dragTr = e.data.dndInfo[2]; 
+       		 	//$('.activityTime', dragTr).css('background-color', 'gray'); 
+       		 	//$('.activityName', dragTr).css('background-color', 'gray'); 
+       		 	//console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
+				
+       	 	break;
+    		case 'drop':
+    			
+        		e.preventDefault();
+        		
+        		dndNewDay = e.data.dndInfo[0]; 
+       		 	dndNewPosition = e.data.dndInfo[1]; 
+       		 	if(!droped){//To solve the "doubble drop" problem 
+       		 		console.log('----------------------------------------------------')
+       		 		console.log('Drop From - Day: '+dndOldDay+' Pos: '+dndOldPosition)
+       		 		console.log('Drop To   - Day: '+dndNewDay+' Pos: '+dndNewPosition)
+       		 		console.log('----------------------------------------------------')
+					model.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);
+				}
+				droped = true; //To solve the "doubble drop" problem 
+       	 	break;
+       	 	case 'dragover':
+     			
+        		e.preventDefault();
+        		
+				
+       	 	break;
+       	 	case 'dragenter':
+				
+       	 		console.log('enter')
+       	 		//dndNewDay = e.data.dndInfo[0]; 
+       		 	//dndNewPosition = e.data.dndInfo[1];
+
+       		 	if(e.data.dndInfo[2]){
+       		 		dragTr = $(dragTr).css('height', 20)
+       		 	 	e.data.dndInfo[2].before(dragTr);
+       		 	 
+       		 	}
+       		 
+       		 	
+       	 	break; 
+       	 	case 'dragleave':
+       	 		
+       	 		console.log('leave')
+       	 		//dragTr.hide(); 
+       	 		//this.days[dndNewDay]._removeActivity(dndNewPosition);
+       	 		//self.notifyObservers(); 
+
+       	 	break; 
+    		default:
+    			console.log('Defult'); 
+        		
+		}
+		
+	}
+
+	//_____DRAG AND DROP FOR THE PARKED TABLE_____//
+	this.tableDivpark.on("dragover", {dndInfo:[null, 0]}, this.dragAndDrop);
+	this.tableDivpark.on("drop", {dndInfo:[null, 0]}, this.dragAndDrop);
+
 	//_____UPDATE TABLES_____//
 	this.updateTable = function(dnd){
 		
 		//_____DELETE CURRENT DATA_____//
-		$('tr:not(:first)', self.parkedActivitesTable).remove();
+		$('tr:not(:first)', this.parkedActivitesTable).remove();
 		$('.activityTable:not(:first)', self.dayView).remove();
 		$('.activity:not(:first)', self.dayActivitesTable).remove();
-console.log(model.parkedActivities)
+		
 		//_____LOOP TROUGH THE ACTIVITY HOLDERS_____//
 		for(var i = 0; i < model.days.length+1; i++){ //+1 for the parked activites
 			//____Select data depending on holder type (day or parked)_____//
@@ -74,13 +148,14 @@ console.log(model.parkedActivities)
   					tempModel.notifyObservers(); 
 				});
 				
+				if(!dnd){
 				//_____DRAG AND DROP_____///
-				activityHolder.on("dragover",  {dndInfo:[dayIndex, 0]}, model.dragAndDrop);		
-				activityHolder.on("drop", 	   {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
-				//activityHolder.on("dragenter", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
-				//activityHolder.on("dragleave", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
+				activityHolder.on("dragover",  {dndInfo:[dayIndex, 0]}, this.dragAndDrop);		
+				activityHolder.on("drop", 	   {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
+				//activityHolder.on("dragenter", {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
+				//activityHolder.on("dragleave", {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
 				//console.log('i: '+i+' dayindex: '+dayIndex)
-			
+				}
 				
 
 				//_____DELETE_THE_DAY____///
@@ -94,11 +169,12 @@ console.log(model.parkedActivities)
 				});
 
 				//______PRINT HEADER DATA FOR THE DAY_____//
+				
 				$('#dayId', activityHolder).text('Day '+(dayIndex+1));								//DAY NUMBER
 				$('#startTimeDay', activityHolder).val(model.days[dayIndex].getStart());			//START TIME
 				$('#endTimeDay', activityHolder).text(model.days[dayIndex].getEnd());				//END TIME
 				$('#totalTimeDay', activityHolder).text(model.days[dayIndex].getTotalLength());		//TOTAL TIME
-
+				
 				//_____APPEND_____//
 				activityHolder.show();
 				container.find("#tableDivday").append(activityHolder);
@@ -159,12 +235,20 @@ console.log(model.parkedActivities)
 				
 
 				//_____Drag and Drop_____//
-				tr.attr('draggable', true);
-				var dndInfo = [dayIndex, j];
-				tr.on("dragstart", {dndInfo:dndInfo}, model.dragAndDrop);
-				tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
-				tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);
-				//tr.on("dragenter", {dndInfo:dndInfo}, model.dragAndDrop);
+					tr.attr('draggable', true);
+					var dndInfo = [dayIndex, j, tr];
+					tr.on("dragstart", {dndInfo:dndInfo}, this.dragAndDrop);
+				
+					tr.on("dragover", {names:dndInfo}, this.dragAndDrop);
+					tr.on("drop", {dndInfo:dndInfo}, this.dragAndDrop);
+					tr.on("dragenter", {dndInfo:dndInfo}, this.dragAndDrop);
+					tr.on("dragleave", {dndInfo:dndInfo}, this.dragAndDrop);
+				
+
+				//______Edit activity when doubleclicked______//
+				var indexInfo=[i, j];
+				tr.on("dblclick", {indexInfo:indexInfo}, view.editActivity);
+
 
 				//_____DESCRIPTION WHEN MOUSEOVER_____//
 				tr.on("mouseenter mouseleave", {desc:activityDescription, holder:activityHolder}, function(e){
@@ -200,7 +284,8 @@ console.log(model.parkedActivities)
 	}
 
 	this.update = function(){
-		this.updateTable(0); 
+		//console.log(dndFlag)
+		this.updateTable(dndFlag); 
 	}
 
 	model.addObserver(this);
