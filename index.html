@@ -62,7 +62,7 @@
 
 
     /*--Add Activity--*/ 
-    #addActivityView{
+    .popUpActivity{
         display:none;
         z-index: 5;
         position:absolute;
@@ -77,7 +77,7 @@
         padding: 20px 20px 20px 20px;  
     }
     
-    #addActivityView > div{
+   .popUpActivity > div{
         margin: 10px;
     }
 
@@ -190,7 +190,7 @@
         <div id = "popup">Pop UPP</div> 
          
         <!--Add activity Popup-->
-        <div id = "addActivityView">
+        <div id = "addActivityView" class="popUpActivity">
             <div><input type = "text" id="activityName" placeholder="Name"></input></div>
             <div><input type = "number" id="activityLength" placeholder="Length"></input></div>
             <div><select id = "activityType">
@@ -206,6 +206,23 @@
             <div><button id = "addActivityCancelButton">Cancel</button></div>
         </div> 
         <!--Add activity Popup END-->
+
+        <!-- Edit activity Popup -->
+        <div id = "editActivityView" class="popUpActivity">
+            <div><input type = "text" id="editActivityName"></input></div>
+            <div><input type = "number" id="editActivityLength"></input></div>
+            <div><select id = "editActivityType">
+                <option value=""  disabled selected style='display:none;'>Type</option>
+                <option value="Presentation">Presentation</option>
+                <option value="Group Work">Group Work</option>
+                <option value="Discussion">Discussion</option>    
+                <option value="Break">Break</option>   
+            </select></div>
+           <div> <input type = "text" id="editActivityDescription"></input></div>
+            <div><button id = "editActivityDoneButton" >Done</button></div>
+            <div><button id = "editActivityRemoveButton">Remove</button></div>
+        </div>
+        <!-- Edit activity Popup END-->
            
         <!--Parked Activities-->
         <div id = "parkedView">
@@ -284,6 +301,8 @@
     <script src="js/view/addActivityView.js"></script>
     <script src="js/view/mainView.js"></script>
     <script src="js/view/addActivityController.js"></script>
+    <script src="js/view/editActivityView.js"></script>
+    <script src="js/view/editActivityController.js"></script>
     <script src="js/view/dragAndDrop.js"></script>
  </body>
 </html>
