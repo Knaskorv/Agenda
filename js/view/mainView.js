@@ -1,5 +1,5 @@
 //ExampleView Object constructor
-var MainView = function (container, model) {
+var MainView = function (container, model, view) {
 	
 	// Get all the relevant elements of the view (ones that show data
   	// and/or ones that responed to interaction)
@@ -165,6 +165,12 @@ console.log(model.parkedActivities)
 				tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
 				tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);
 				//tr.on("dragenter", {dndInfo:dndInfo}, model.dragAndDrop);
+
+
+				//______Edit activity when doubleclicked______//
+				var indexInfo=[i, j];
+				tr.on("dblclick", {indexInfo:indexInfo}, view.editActivity);
+
 
 				//_____DESCRIPTION WHEN MOUSEOVER_____//
 				tr.on("mouseenter mouseleave", {desc:activityDescription, holder:activityHolder}, function(e){
