@@ -4,9 +4,11 @@ $(function() {
 	
 	//And create the needed controllers and views
 	
-	var mainView = new MainView($("#mainView"), model);
+	var editActivityView = new EditActivityView($("#editActivityView"), model);
+	var mainView = new MainView($("#mainView"), model, editActivityView);
 	var addActivityView = new AddActivityView($("#addActivityView"), model);
 	
 
 	var addActivityController = new AddActivityController(addActivityView, model);
+	var editActivityController = new EditActivityController(editActivityView, model);
 });
