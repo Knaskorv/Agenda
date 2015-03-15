@@ -64,6 +64,9 @@ function Activity(name,length,typeid,description){
 	};
 }
 
+
+
+
 // This is a day consturctor. You can use it to create days, 
 // but there is also a specific function in the Model that adds
 // days to the model, so you don't need call this yourself.
@@ -92,13 +95,15 @@ function Day(startH,startM) {
 	// the end time of the day
 	this.getEnd = function() {
 		var end = this._start + this.getTotalLength();
-		return Math.floor(end/60) + ":" + end % 60;
+		return (Math.floor(end/60) < 10 ? '0'+Math.floor(end/60) : Math.floor(end/60))+ 
+		":" + ((end % 60) < 10 ? '0'+(end % 60) : (end % 60));
 	};
 	
 	// returns the string representation Hours:Minutes of 
 	// the start time of the day
 	this.getStart = function() {
-		return Math.floor(this._start/60) + ":" + this._start % 60;
+		return (Math.floor(this._start/60) < 10 ? '0'+Math.floor(this._start/60) : Math.floor(this._start/60))+ 
+		":" + ((this._start % 60) < 10 ? '0'+(this._start % 60) : (this._start % 60));
 	};
 	
 	// returns the length (in minutes) of activities of certain type
@@ -136,13 +141,12 @@ function Day(startH,startM) {
 	this._moveActivity = function(oldposition,newposition) {
 		// In case new position is greater than the old position and we are not moving
 		// to the last position of the array
-		console.log('NewPos1 '+newposition);
+
 		// if(newposition > oldposition && newposition < this._activities.length - 1) {
 		// 	newposition--;
 		// }
-		console.log('OldPos '+oldposition)
+	
 		var activity = this._removeActivity(oldposition);
-		console.log('NewPos '+newposition);
 		this._addActivity(activity, newposition);
 	};
 }
@@ -156,6 +160,8 @@ function Model(){
 	var dndNewDay;
 	var dndNewPosition;
 	var self = this;
+	var dropActivity; 
+	
 	this.dragAndDrop = function(e){
 			
 			switch(e.type) {
@@ -163,26 +169,44 @@ function Model(){
     			
        		 	dndOldDay = e.data.dndInfo[0]; 
        		 	dndOldPosition = e.data.dndInfo[1]; 
+       		 	console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
 				
        	 	break;
     		case 'drop':
         		e.preventDefault();
         		dndNewDay = e.data.dndInfo[0]; 
        		 	dndNewPosition = e.data.dndInfo[1]; 
-				console.log('Drop: '+dndOldDay+" pos: "+dndOldPosition+" TO: "+dndNewDay+" pos: "+dndNewPosition);
+       		 	console.log('Drop - Day: '+dndNewDay+' Pos: '+dndNewPosition)
 				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);	
        	 	break;
        	 	case 'dragover':
+       	 		
         		e.preventDefault();
-				console.log('dragOver');
+        		//dndNewDay = e.data.dndInfo[0]; 
+       		 	//dndNewPosition = e.data.dndInfo[1];
+        		//dropActivity = Activity('',length,10,'')
 				
        	 	break;
        	 	case 'dragenter':
-       	 		console.log('ENTER');
        	 		
+       	 		dndNewDay = e.data.dndInfo[0]; 
+       		 	dndNewPosition = e.data.dndInfo[1]; 
+       		 	dropActivity = new Activity("",50,0,""); 
+
+       		 	//self.addActivity(dropActivity,dndNewDay, dndNewPosition);
+       		 	//console.log(dropActivity+' '+dndNewDay+' '+ dndNewPosition)
+  
+       		 	//self.notifyObservers(); 
+
+       	 	break; 
+       	 	case 'dragleave':
+       	 		
+       	 		//this.days[dndNewDay]._removeActivity(dndNewPosition);
+       	 		self.notifyObservers(); 
+
        	 	break; 
     		default:
-        	console.log('defult');	
+        		
 		}
 		
 	}
@@ -204,8 +228,14 @@ function Model(){
 		return day;
 	};
 	
+	this.removeDay = function(dayNr){
+		this.days.splice(dayNr, 1); 
+		this.notifyObservers();
+	};
+
 	// add an activity to model
 	this.addActivity = function (activity,day,position) {
+
 		if(day != null) {
 			this.days[day]._addActivity(activity,position);
 		} else {
@@ -214,6 +244,7 @@ function Model(){
 			}
 			else this.parkedActivities.push(activity);
 		}
+		
 		this.notifyObservers();
 	}
 	

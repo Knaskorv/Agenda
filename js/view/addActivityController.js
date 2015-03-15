@@ -21,6 +21,8 @@ var AddActivityController = function (view, model) {
 
 	});
 	
+	
+
 	view.activityName.change(function(){
 		view.update();
 	});
