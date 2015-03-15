@@ -20,7 +20,7 @@ function Activity(name,length,typeid,description){
 	}
 
 	// get the name of the activity
-	this.getName = function(name) {
+	this.getName = function() {
 		return _name;
 	}
 	
