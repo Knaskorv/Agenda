@@ -5,8 +5,7 @@ var MainView = function (container, model) {
   	// and/or ones that responed to interaction)
 	 	
 	this.dayActivitesTable = container.find("#dayActivitesTable");
-	this.dayActivitesTableHead = container.find("#dayActivitesTableHead");
-	this.dayActivitesTable = container.find("#dayActivitesTable");
+	
 	this.addDayButton = container.find("#addDayButton");
 	this.toScroll = container.find("#toScroll");
 	this.delBtn = container.find("#delBtn");
@@ -23,6 +22,13 @@ var MainView = function (container, model) {
 		model.addDay(8, 15); 
 	});
 
+	var tempActivityType = ["Presentation","Group Work","Discussion","Break"]
+	for(var f = 0; f<4; f++){
+		var activity = new Activity(f, f*10, tempActivityType[f], f);
+		model.addParkedActivity(activity, 0)
+	}
+
+
 	this.addActivityButton.click(function(){
 		document.getElementById("addActivityView").style.display = "block"; 
 		document.getElementById("blackout").style.display = "block"; 
@@ -34,28 +40,29 @@ var MainView = function (container, model) {
 	});
 
 	//_____DRAG AND DROP FOR THE PARKED TABLE_____//
-	//this.parkedActivitesTable.on("dragover", {dndInfo:[null, 0]}, model.dragAndDrop);
-	//this.parkedActivitesTable.on("drop", {dndInfo:[null, 0]}, model.dragAndDrop);
+	this.tableDivpark.on("dragover", {dndInfo:[null, 0]}, model.dragAndDrop);
+	this.tableDivpark.on("drop", {dndInfo:[null, 0]}, model.dragAndDrop);
 	
 	//_____UPDATE TABLES_____//
 	this.updateTable = function(dnd){
 		
 		//_____DELETE CURRENT DATA_____//
 		$('tr:not(:first)', self.parkedActivitesTable).remove();
-		$('.table:not(:first)', self.dayView).remove();
+		$('.activityTable:not(:first)', self.dayView).remove();
 		$('.activity:not(:first)', self.dayActivitesTable).remove();
-
+console.log(model.parkedActivities)
 		//_____LOOP TROUGH THE ACTIVITY HOLDERS_____//
 		for(var i = 0; i < model.days.length+1; i++){ //+1 for the parked activites
 			//____Select data depending on holder type (day or parked)_____//
+			
 			if(!i){//Parked
 				var dayIndex = null; 
-				var activityHolder = this.parkedActivitesTable; 
+				var activityHolder = self.parkedActivitesTable; 
 				var activitesTarget = model.parkedActivities; 
 			}
 			else{//Day
 				var dayIndex = i-1; 
-				var activityHolder = self.dayActivitesTableHead.clone();
+				var activityHolder = self.dayActivitesTable.clone();
 				var activitesTarget = model.days[dayIndex]._activities; 
 
 				//____CHANGE_STARTTIME_OF_THE_DAY______//
@@ -70,8 +77,11 @@ var MainView = function (container, model) {
 				//_____DRAG AND DROP_____///
 				activityHolder.on("dragover",  {dndInfo:[dayIndex, 0]}, model.dragAndDrop);		
 				activityHolder.on("drop", 	   {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
-				activityHolder.on("dragenter", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
-				activityHolder.on("dragleave", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
+				//activityHolder.on("dragenter", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
+				//activityHolder.on("dragleave", {dndInfo:[dayIndex, 0]}, model.dragAndDrop);
+				//console.log('i: '+i+' dayindex: '+dayIndex)
+			
+				
 
 				//_____DELETE_THE_DAY____///
 				$('#delBtn', activityHolder).on('click', {dayNr:dayIndex}, function(e){
@@ -94,14 +104,13 @@ var MainView = function (container, model) {
 				container.find("#tableDivday").append(activityHolder);
 			}
 
-			//console.log(dayIndex)
 			
-			//_____LOOP TOOUGH EACH HOLDES ACTIVITES_____//
 			var breakTime = 0; 
+			//_____LOOP TOOUGH EACH HOLDES ACTIVITES_____//
 			for(var j = 0; j < activitesTarget.length; j++){
 				
 				//_____Copy template_____//
-				var tr = $('tr.activity', self.dayActivitesTable).clone();
+				var tr = $('tr.activity', self.parkedActivitesTable).clone().removeClass('activity');
 				
 
 				//_____Get data_____//
@@ -155,7 +164,7 @@ var MainView = function (container, model) {
 				tr.on("dragstart", {dndInfo:dndInfo}, model.dragAndDrop);
 				tr.on("dragover", {names:dndInfo}, model.dragAndDrop);
 				tr.on("drop", {dndInfo:dndInfo}, model.dragAndDrop);
-				tr.on("dragenter", {dndInfo:dndInfo}, model.dragAndDrop);
+				//tr.on("dragenter", {dndInfo:dndInfo}, model.dragAndDrop);
 
 				//_____DESCRIPTION WHEN MOUSEOVER_____//
 				tr.on("mouseenter mouseleave", {desc:activityDescription, holder:activityHolder}, function(e){
@@ -174,6 +183,7 @@ var MainView = function (container, model) {
 
 				tr.show(); 
 				activityHolder.append(tr);
+				
 			}	
 
 			if(i){
@@ -185,6 +195,7 @@ var MainView = function (container, model) {
 				$('#proInd', activityHolder).text(breakTimeRatio+'% Break')
 				.css('background', 'linear-gradient(to right,  '+proIndColor1+' 0%,'+proIndColor1+' '+breakTimeRatio+'%,'+proIndColor2+' '+breakTimeRatio+'%,'+proIndColor2+' 100%)');
 			}
+
 		}
 	}
 

@@ -169,18 +169,19 @@ function Model(){
     			
        		 	dndOldDay = e.data.dndInfo[0]; 
        		 	dndOldPosition = e.data.dndInfo[1]; 
-       		 	console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
+       		 	//console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
 				
        	 	break;
     		case 'drop':
         		e.preventDefault();
         		dndNewDay = e.data.dndInfo[0]; 
        		 	dndNewPosition = e.data.dndInfo[1]; 
-       		 	console.log('Drop - Day: '+dndNewDay+' Pos: '+dndNewPosition)
+       		 	console.log('Drop From - Day: '+dndOldDay+' Pos: '+dndOldPosition)
+       		 	console.log('Drop To   - Day: '+dndNewDay+' Pos: '+dndNewPosition)
 				self.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);	
        	 	break;
        	 	case 'dragover':
-       	 		
+       	 		console.log('dragover')
         		e.preventDefault();
         		//dndNewDay = e.data.dndInfo[0]; 
        		 	//dndNewPosition = e.data.dndInfo[1];
@@ -188,10 +189,10 @@ function Model(){
 				
        	 	break;
        	 	case 'dragenter':
-       	 		
-       	 		dndNewDay = e.data.dndInfo[0]; 
-       		 	dndNewPosition = e.data.dndInfo[1]; 
-       		 	dropActivity = new Activity("",50,0,""); 
+       	 		console.log('dragover')
+       	 		//dndNewDay = e.data.dndInfo[0]; 
+       		 	//dndNewPosition = e.data.dndInfo[1]; 
+       		 	//dropActivity = new Activity("",50,0,""); 
 
        		 	//self.addActivity(dropActivity,dndNewDay, dndNewPosition);
        		 	//console.log(dropActivity+' '+dndNewDay+' '+ dndNewPosition)
@@ -202,7 +203,7 @@ function Model(){
        	 	case 'dragleave':
        	 		
        	 		//this.days[dndNewDay]._removeActivity(dndNewPosition);
-       	 		self.notifyObservers(); 
+       	 		//self.notifyObservers(); 
 
        	 	break; 
     		default:
