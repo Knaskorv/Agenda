@@ -1,8 +1,6 @@
 //ExampleView Object constructor
 var AddActivityController = function (view, model) {
-	
-	// Get all the relevant elements of the view (ones that show data
-  	// and/or ones that responed to interaction)
+
 
 	view.addActivityDoneButton.click(function(){
 		document.getElementById("addActivityView").style.display = "none"; 
