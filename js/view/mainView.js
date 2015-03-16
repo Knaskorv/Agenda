@@ -181,6 +181,9 @@ var MainView = function (container, model, view) {
 			}
 
 			
+			var presentationTime = 0;
+			var groupWorkTime = 0;
+			var discussionTime = 0;
 			var breakTime = 0; 
 			//_____LOOP TOOUGH EACH HOLDES ACTIVITES_____//
 			for(var j = 0; j < activitesTarget.length; j++){
@@ -196,19 +199,23 @@ var MainView = function (container, model, view) {
 				var activityType = 	 	  activitesTarget[j].getTypeId(); 
 
 				//_____Set the color_____//
+				var actColors = ["#6C6CFF","#85FF85","#FF5F5F","#FFFF66"];
 				var color; 
 				switch(activityType) {
    					case "Presentation":
-        				color = '#6C6CFF';  
+        				color = actColors[0];
+        				presentationTime +=Number(activityLength);  
         				break;
         			case "Group Work":
-        				color = '#85FF85'; 
+        				color = actColors[1];
+        				groupWorkTime +=Number(activityLength); 
         				break; 
         			case "Discussion":
-        				color = '#FF5F5F'; 
+        				color = actColors[2];
+        				discussionTime +=Number(activityLength);
         				break;
         			case "Break":
-        				color = '#FFFF66'; 
+        				color = actColors[3]; 
         				breakTime += Number(activityLength);
         				break; 
         		}
@@ -273,11 +280,31 @@ var MainView = function (container, model, view) {
 			if(i){
 			//_____Break Time Indicator_____//
 				var breakTimeRatio = ((breakTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((breakTime/model.days[dayIndex].getTotalLength())*100) : 0; 
+				var discussionTimeRatio = ((discussionTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((discussionTime/model.days[dayIndex].getTotalLength())*100) : 0;
+				var groupWorkTimeRatio = ((groupWorkTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((groupWorkTime/model.days[dayIndex].getTotalLength())*100) : 0;
+				var presentationTimeRatio = ((presentationTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((presentationTime/model.days[dayIndex].getTotalLength())*100) : 0;
+				var sumAll = 0;
+				if((breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio+presentationTimeRatio) <100 && (breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio+presentationTimeRatio)>97){
+					sumAll=100;
+				}
+				else{
+					sumAll =(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio+presentationTimeRatio);
+				}
 				
-				var proIndColor1 = '#FFFF66'; 
-				var proIndColor2 = 'white';
+				console.log(breakTimeRatio);
+				console.log(discussionTimeRatio);
+				console.log(groupWorkTimeRatio);
+				console.log(presentationTimeRatio);
+
+
+				var proIndColorBreak = actColors[3];
+				var proIndColorDisc = actColors[2];
+				var proIndColorGW = actColors[1];
+				var proIndColorPres = actColors[0];
+				var proIndColor2 = "white"; 
+				
 				$('#proInd', activityHolder).text(breakTimeRatio+'% Break')
-				.css('background', 'linear-gradient(to right,  '+proIndColor1+' 0%,'+proIndColor1+' '+breakTimeRatio+'%,'+proIndColor2+' '+breakTimeRatio+'%,'+proIndColor2+' 100%)');
+				.css('background', 'linear-gradient(to right,  '+proIndColorBreak+' 0%,'+proIndColorBreak+' '+breakTimeRatio+'%,' +proIndColorDisc+' '+breakTimeRatio+'%,'+proIndColorDisc+' '+(breakTimeRatio+discussionTimeRatio)+'%,'+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio)+'%,'+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'+proIndColorPres+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'+ proIndColorPres+' '+ sumAll +'%,'      +proIndColor2+' '+sumAll+'%,'+proIndColor2+' 100%)');
 			}
 
 		}
