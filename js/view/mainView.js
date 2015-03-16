@@ -33,34 +33,22 @@ var MainView = function (container, model, view) {
 		document.getElementById("addActivityView").style.display = "block"; 
 		document.getElementById("blackout").style.display = "block"; 
 	});
-
-	this.addActivityButton.click(function(){
-		document.getElementById("addActivityView").style.display = "block"; 
-		document.getElementById("blackout").style.display = "block"; 
-	});
-
-
 	
 	//DRAG AND DROP
 	var dndOldDay;
 	var dndOldPosition;
 	var dndNewDay;
 	var dndNewPosition;
-	var dropActivity; 
-	var dndFlag = false; 
 	var dragTr; 
-	var droped = false; 
+	var dropped = false; 
 	this.dragAndDrop = function(e){
 			
 			switch(e.type) {
     		case 'dragstart':
-    			droped = false; //To solve the "doubble drop" problem 
+    			dropped = false; //To solve the "doubble drop" problem 
        		 	dndOldDay = e.data.dndInfo[0]; 
        		 	dndOldPosition = e.data.dndInfo[1]; 
        		 	dragTr = e.data.dndInfo[2]; 
-       		 	//$('.activityTime', dragTr).css('background-color', 'gray'); 
-       		 	//$('.activityName', dragTr).css('background-color', 'gray'); 
-       		 	//console.log('Dragstart - Day: '+dndOldDay+' Pos: '+dndOldPosition)
 				
        	 	break;
     		case 'drop':
@@ -69,42 +57,27 @@ var MainView = function (container, model, view) {
         		
         		dndNewDay = e.data.dndInfo[0]; 
        		 	dndNewPosition = e.data.dndInfo[1]; 
-       		 	if(!droped){//To solve the "doubble drop" problem 
-       		 		console.log('----------------------------------------------------')
-       		 		console.log('Drop From - Day: '+dndOldDay+' Pos: '+dndOldPosition)
-       		 		console.log('Drop To   - Day: '+dndNewDay+' Pos: '+dndNewPosition)
-       		 		console.log('----------------------------------------------------')
+       		 	if(!dropped){//To solve the "doubble drop" problem 
 					model.moveActivity(dndOldDay, dndOldPosition, dndNewDay, dndNewPosition);
 				}
-				droped = true; //To solve the "doubble drop" problem 
+				dropped = true; //To solve the "doubble drop" problem 
        	 	break;
        	 	case 'dragover':
-     			
         		e.preventDefault();
-        		
-				
        	 	break;
        	 	case 'dragenter':
-				
-       	 		console.log('enter')
-       	 		//dndNewDay = e.data.dndInfo[0]; 
-       		 	//dndNewPosition = e.data.dndInfo[1];
-
+       	 		//_____Dnd Indicator_____//
        		 	if(e.data.dndInfo[2]){
+       		 		if(dndOldDay == e.data.dndInfo[0] && dndOldPosition < e.data.dndInfo[1]){
+						e.data.dndInfo[2].after(dragTr);
+       		 		}
+       		 		else{
        		 		dragTr = $(dragTr).css('height', 20)
        		 	 	e.data.dndInfo[2].before(dragTr);
-       		 	 
+       		 	 	}
        		 	}
-       		 
-       		 	
        	 	break; 
        	 	case 'dragleave':
-       	 		
-       	 		console.log('leave')
-       	 		//dragTr.hide(); 
-       	 		//this.days[dndNewDay]._removeActivity(dndNewPosition);
-       	 		//self.notifyObservers(); 
-
        	 	break; 
     		default:
     			console.log('Defult'); 
@@ -118,6 +91,7 @@ var MainView = function (container, model, view) {
 	this.tableDivpark.on("drop", {dndInfo:[null, 0]}, this.dragAndDrop);
 
 	//_____UPDATE TABLES_____//
+	var hiddenTables = []; 
 	this.updateTable = function(dnd){
 		
 		//_____DELETE CURRENT DATA_____//
@@ -128,7 +102,7 @@ var MainView = function (container, model, view) {
 		//_____LOOP TROUGH THE ACTIVITY HOLDERS_____//
 		for(var i = 0; i < model.days.length+1; i++){ //+1 for the parked activites
 			//____Select data depending on holder type (day or parked)_____//
-			
+				
 			if(!i){//Parked
 				var dayIndex = null; 
 				var activityHolder = self.parkedActivitesTable; 
@@ -148,15 +122,13 @@ var MainView = function (container, model, view) {
   					tempModel.notifyObservers(); 
 				});
 				
-				if(!dnd){
+				
 				//_____DRAG AND DROP_____///
 				activityHolder.on("dragover",  {dndInfo:[dayIndex, 0]}, this.dragAndDrop);		
 				activityHolder.on("drop", 	   {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
 				//activityHolder.on("dragenter", {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
 				//activityHolder.on("dragleave", {dndInfo:[dayIndex, 0]}, this.dragAndDrop);
-				//console.log('i: '+i+' dayindex: '+dayIndex)
-				}
-				
+			
 
 				//_____DELETE_THE_DAY____///
 				$('#delBtn', activityHolder).on('click', {dayNr:dayIndex}, function(e){
@@ -164,8 +136,20 @@ var MainView = function (container, model, view) {
 				});
 
 				//_____TOGGLE_ACTIVITIES______//
-				$('#toggleTable', activityHolder).on('click', {tableToHide:$('tbody', activityHolder)}, function(e){
-					e.data.tableToHide.toggle("fast"); 
+				$('#toggleTable', activityHolder).on('click', {Tinfo:[$('tbody', activityHolder), dayIndex]}, function(e){
+					var target = $(this); 
+					tableToHide = e.data.Tinfo[0]; 
+					dayNr = e.data.Tinfo[1]; 
+					if($(this).data("hidden")){
+						tableToHide.show("fast"); 
+						target.data("hidden", false)
+						hiddenTables[dayNr] = false; 
+					}
+					else{
+						tableToHide.hide("fast"); 
+						target.data("hidden", true)
+						hiddenTables[dayNr] = true; 
+					}
 				});
 
 				//______PRINT HEADER DATA FOR THE DAY_____//
@@ -178,6 +162,7 @@ var MainView = function (container, model, view) {
 				//_____APPEND_____//
 				activityHolder.show();
 				container.find("#tableDivday").append(activityHolder);
+				var currentTime = model.days[dayIndex].getStart(); 
 			}
 
 			
@@ -197,7 +182,14 @@ var MainView = function (container, model, view) {
 				var activityName = 		  activitesTarget[j].getName();
 				var activityDescription = activitesTarget[j].getDescription();
 				var activityType = 	 	  activitesTarget[j].getTypeId(); 
-
+				if(i){
+					var activityStartTime = currentTime; 
+					var startTimeHnM = activityStartTime.split(":");
+					var timeInMinutes = Number(startTimeHnM[0]) * 60  +Number(startTimeHnM[1])+Number(activityLength); 
+					var activityEndTime = (Math.floor(timeInMinutes/60) < 10 ? '0'+Math.floor(timeInMinutes/60) : Math.floor(timeInMinutes/60))
+										+':'+
+										((timeInMinutes%60) < 10 ? '0'+(timeInMinutes%60) : (timeInMinutes%60)); 					
+				}
 				//_____Set the color_____//
 				var actColors = ["#6C6CFF","#85FF85","#FF5F5F","#FFFF66"];
 				var color; 
@@ -226,7 +218,8 @@ var MainView = function (container, model, view) {
         			timeToDisplay = activityLength+' min'
         		}
         		else{
-        			timeToDisplay = model.days[dayIndex].getStart()+' - '+model.days[dayIndex].getEnd(); 
+        			timeToDisplay = activityStartTime+' - '+activityEndTime; 
+        			
         			//console.log('else  '+timeToDisplay)
         		}
 
@@ -245,7 +238,6 @@ var MainView = function (container, model, view) {
 					tr.attr('draggable', true);
 					var dndInfo = [dayIndex, j, tr];
 					tr.on("dragstart", {dndInfo:dndInfo}, this.dragAndDrop);
-				
 					tr.on("dragover", {names:dndInfo}, this.dragAndDrop);
 					tr.on("drop", {dndInfo:dndInfo}, this.dragAndDrop);
 					tr.on("dragenter", {dndInfo:dndInfo}, this.dragAndDrop);
@@ -274,12 +266,13 @@ var MainView = function (container, model, view) {
 
 				tr.show(); 
 				activityHolder.append(tr);
+				currentTime = activityEndTime;
 				
 			}	
 
 			if(i){
 			//_____Break Time Indicator_____//
-				var breakTimeRatio = ((breakTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((breakTime/model.days[dayIndex].getTotalLength())*100) : 0; 
+			var breakTimeRatio = ((breakTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((breakTime/model.days[dayIndex].getTotalLength())*100) : 0; 
 				var discussionTimeRatio = ((discussionTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((discussionTime/model.days[dayIndex].getTotalLength())*100) : 0;
 				var groupWorkTimeRatio = ((groupWorkTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((groupWorkTime/model.days[dayIndex].getTotalLength())*100) : 0;
 				var presentationTimeRatio = ((presentationTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((presentationTime/model.days[dayIndex].getTotalLength())*100) : 0;
@@ -291,12 +284,6 @@ var MainView = function (container, model, view) {
 					sumAll =(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio+presentationTimeRatio);
 				}
 				
-				console.log(breakTimeRatio);
-				console.log(discussionTimeRatio);
-				console.log(groupWorkTimeRatio);
-				console.log(presentationTimeRatio);
-
-
 				var proIndColorBreak = actColors[3];
 				var proIndColorDisc = actColors[2];
 				var proIndColorGW = actColors[1];
@@ -304,15 +291,23 @@ var MainView = function (container, model, view) {
 				var proIndColor2 = "white"; 
 				
 				$('#proInd', activityHolder).text(breakTimeRatio+'% Break')
-				.css('background', 'linear-gradient(to right,  '+proIndColorBreak+' 0%,'+proIndColorBreak+' '+breakTimeRatio+'%,' +proIndColorDisc+' '+breakTimeRatio+'%,'+proIndColorDisc+' '+(breakTimeRatio+discussionTimeRatio)+'%,'+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio)+'%,'+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'+proIndColorPres+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'+ proIndColorPres+' '+ sumAll +'%,'      +proIndColor2+' '+sumAll+'%,'+proIndColor2+' 100%)');
+				.css('background', 'linear-gradient(to right,  '+proIndColorBreak+' 0%,'+proIndColorBreak+' '+breakTimeRatio+'%,' 
+																+proIndColorDisc+' '+breakTimeRatio+'%,'+proIndColorDisc+' '+(breakTimeRatio+discussionTimeRatio)+'%,'
+																+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio)+'%,'+proIndColorGW+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'
+																+proIndColorPres+' '+(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio)+'%,'+ proIndColorPres+' '+ sumAll +'%,'      
+																+proIndColor2+' '+sumAll+'%,'+proIndColor2+' 100%)');
 			}
-
+			
+			//_____TOGGLE TBODY_____//
+			if(hiddenTables[dayIndex]){
+				$('tbody', activityHolder).hide(); 
+			}
 		}
 	}
 
 	this.update = function(){
 		//console.log(dndFlag)
-		this.updateTable(dndFlag); 
+		this.updateTable(false); 
 	}
 
 	model.addObserver(this);
