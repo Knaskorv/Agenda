@@ -1,0 +1,201 @@
+html, body {
+        
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    }
+
+
+    #mainView{
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+    }
+
+    #blackout{
+        display: flex;
+        display: none;
+        position:absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+        background-color: white; 
+    }
+
+    #header{
+        background-color: #333333;
+        padding: 3px;
+    }
+
+    #helpBtn{
+        font-size: 16px;
+        font-family: Trebuchet MS;
+        border-radius: 8px 8px 8px 8px;
+        border: 1px solid #DCDCDC;
+        padding: 9px 18px;
+        text-shadow: 1px 1px 0px #CDCDCD;
+        color: #423939;
+        background-color: #D2D2D2;
+        float: left;
+    }
+
+    .fonthead {
+        font-family: "Verdana";
+        text-align: center;
+        color: #CCCCCC;
+    }
+
+    .btn{
+        font-size: 16px;
+        font-family: Trebuchet MS;
+        border-radius: 8px 8px 8px 8px;
+        border: 1px solid #6A8BAD;
+        padding: 9px 18px;
+        text-shadow: 1px 1px 0px #528ECC;
+        color: #E6E6E6;
+        background-color: #537CCF;
+    }
+
+
+    /*--Add Activity--*/ 
+    .popUpActivity{
+        display:none;
+        z-index: 5;
+        position:absolute;
+        top:25%;
+        left:45%;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #E6E6E6; 
+        width:250px; 
+        height: 300px;
+        border-radius: 25px;
+        padding: 20px 20px 20px 20px;  
+    }
+
+    .popUpHelp{
+        display:none;
+        z-index: 5;
+        position:absolute;
+        top:25%;
+        left:45%;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #E6E6E6; 
+        width:250px; 
+        height: 350px;
+        border-radius: 25px;
+        padding: 20px 20px 20px 20px;  
+    }
+    
+   .popUpActivity > div{
+        margin: 10px;
+    }
+
+    /*--Parked View--*/ 
+    #parkedView{
+        width: 300px; 
+        height: 500px;
+        z-index: 2;
+        position:absolute;
+        top:100px;
+        left:20px;
+    }
+
+    #tableDivpark{
+        position: absolute;
+        bottom: 0;
+        z-index: 0;
+        
+        width: 300px;
+        height: 437px;
+        
+        overflow: hidden;
+
+        background-color: #E6E6E6;
+        border:1px solid;
+        border-color: black;
+        border-radius: 25px;
+    }
+
+     /*--Day View--*/ 
+    #dayView{
+        height: 75%;
+        z-index: 2;
+        position:absolute;
+        top:100px;
+        left:350px;
+    }
+
+    #tableDivday{
+        height: 100%;
+        width:  100%;
+        position: relative;
+        bottom: 0;
+        border-width: 2;
+        border-color: black;
+        overflow-x 
+    }
+
+    #dayActivitesTable{
+        padding: 0px 0px 0px 0px;
+        top: 0;  
+        float:left;
+        display: inline-block;
+        width: 300px;
+        display: inline-block;
+        text-align: center;
+        height: 30px;   
+        display: none;
+        margin: 20px 20px 20px 0px ;
+        overflow: hidden;
+        background-color: #E6E6E6; 
+        border:1px solid;
+        border-color: black;
+        border-radius: 25px; 
+    }
+
+     #parkedActivitesTable{
+        z-index: 2;
+        width: 100%;
+        height: 30px;
+        overflow: hidden; 
+        text-align: center;
+    }
+
+    .activityTable > tfoot{
+       visibility: show;
+    } /* FORTSÄTTT UNDERS*/
+    
+
+    #popup {
+        z-index: 3;
+        display: none; 
+        position: absolute;
+        background-color: #FFF0E0;
+        border-width: 2px; 
+        border-color: black;
+        left:320px;
+        width: 150px; 
+        word-break: break-all;
+    }
+    #proInd{
+        border-radius: 60px;
+        padding: -20px; 
+        width: 50%; 
+        height: 10px; 
+    }
+    .activity{
+        display: none; 
+        width: 500px;
+    }
+
+    #scrollPark{
+        width:315px; 
+        height:447px; 
+        padding-bottom:15px; 
+        overflow-y:scroll;
+    }

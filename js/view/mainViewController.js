@@ -1,14 +1,25 @@
 //ExampleView Object constructor
 var MainViewController = function (view, model) {
-	
-	// Get all the relevant elements of the view (ones that show data
-  	// and/or ones that responed to interaction)
 
+		//_____Buttons_____//
+		view.addDayButton.click(function(){
+		model.addDay(8, 15);
+	
+		});
 
-		//_____DragAndDrop_____//
-	
-	
-	
+		view.addActivityButton.click(function(){
+		document.getElementById("addActivityView").style.display = "block"; 
+		document.getElementById("blackout").style.display = "block"; 
+		});
+
+		view.helpBtn.click(function(){
+			document.getElementById("helpView").style.display = "block"; 
+			document.getElementById("blackout").style.display = "block"; 
+
+		});
+		
+		
+		
 }
  
 
