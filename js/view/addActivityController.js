@@ -1,7 +1,6 @@
 //ExampleView Object constructor
 var AddActivityController = function (view, model) {
 
-
 	view.addActivityDoneButton.click(function(){
 		document.getElementById("addActivityView").style.display = "none"; 
 		document.getElementById("blackout").style.display = "none"; 
@@ -16,7 +15,11 @@ var AddActivityController = function (view, model) {
 
 	});
 	
-	
+	view.addActivityCancelButton.click(function(){
+		document.getElementById("addActivityView").style.display = "none"; 
+		document.getElementById("blackout").style.display = "none"; 
+		
+	});
 
 	view.activityName.change(function(){
 		view.update();

@@ -1,3 +1,0 @@
-//ExampleView Object constructor
-
-

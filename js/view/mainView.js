@@ -13,26 +13,10 @@ var MainView = function (container, model, view) {
 	this.parkedActivitesTable = container.find("#parkedActivitesTable");
 	this.tableDivpark = container.find("#tableDivpark");
 	this.dayView = container.find("#dayView");
+	this.helpBtn = container.find("#helpBtn");
 
 	var self = this; 
-	model.addDay(8,15); 
-
-	//_____CONTROLLER PARTS_____//
-	this.addDayButton.click(function(){
-		model.addDay(8, 15); 
-	});
-
-	var tempActivityType = ["Presentation","Group Work","Discussion","Break"]
-	for(var f = 0; f<4; f++){
-		var activity = new Activity(f, f*10, tempActivityType[f], f);
-		model.addParkedActivity(activity, 0)
-	}
-
-
-	this.addActivityButton.click(function(){
-		document.getElementById("addActivityView").style.display = "block"; 
-		document.getElementById("blackout").style.display = "block"; 
-	});
+	model.addDay(8,15); //Add the first day at init
 	
 	//DRAG AND DROP
 	var dndOldDay;
@@ -170,6 +154,7 @@ var MainView = function (container, model, view) {
 			var groupWorkTime = 0;
 			var discussionTime = 0;
 			var breakTime = 0; 
+			var actColors = ["#6C6CFF","#85FF85","#FF5F5F","#FFFF66"];
 			//_____LOOP TOOUGH EACH HOLDES ACTIVITES_____//
 			for(var j = 0; j < activitesTarget.length; j++){
 				
@@ -191,7 +176,7 @@ var MainView = function (container, model, view) {
 										((timeInMinutes%60) < 10 ? '0'+(timeInMinutes%60) : (timeInMinutes%60)); 					
 				}
 				//_____Set the color_____//
-				var actColors = ["#6C6CFF","#85FF85","#FF5F5F","#FFFF66"];
+				
 				var color; 
 				switch(activityType) {
    					case "Presentation":
@@ -270,6 +255,7 @@ var MainView = function (container, model, view) {
 				
 			}	
 
+			var tempactColors = actColors;
 			if(i){
 			//_____Break Time Indicator_____//
 			var breakTimeRatio = ((breakTime/model.days[dayIndex].getTotalLength())*100) >= 0 ? Math.floor((breakTime/model.days[dayIndex].getTotalLength())*100) : 0; 
@@ -284,10 +270,10 @@ var MainView = function (container, model, view) {
 					sumAll =(breakTimeRatio+discussionTimeRatio+groupWorkTimeRatio+presentationTimeRatio);
 				}
 				
-				var proIndColorBreak = actColors[3];
-				var proIndColorDisc = actColors[2];
-				var proIndColorGW = actColors[1];
-				var proIndColorPres = actColors[0];
+				var proIndColorBreak = tempactColors[3];
+				var proIndColorDisc = tempactColors[2];
+				var proIndColorGW = tempactColors[1];
+				var proIndColorPres = tempactColors[0];
 				var proIndColor2 = "white"; 
 				
 				$('#proInd', activityHolder).text(breakTimeRatio+'% Break')
@@ -315,6 +301,3 @@ var MainView = function (container, model, view) {
 
 }
  
-
-
-

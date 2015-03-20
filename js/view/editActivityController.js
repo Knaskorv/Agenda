@@ -1,7 +1,7 @@
 //ExampleView Object constructor
 var EditActivityController = function (view, model) {
 	
-
+	// Changes the screen view and informs model of changes.
 	view.editActivityDoneButton.click(function(){
 		document.getElementById("editActivityView").style.display = "none"; 
 		document.getElementById("blackout").style.display = "none"; 
